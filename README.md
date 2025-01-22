@@ -7,7 +7,9 @@ updated to check all (valid) xmls in the current directory or using path.
 check py for required packages.
 
 Place in your kb folder
+
 python checkKB.py
 
-or using path: 
+or using path:
+
 python checkKB.py X:/path/to/kb/folder
