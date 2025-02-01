@@ -2,6 +2,7 @@ import requests
 import os
 import xml.etree.ElementTree as ET
 from cryptography import x509
+from colorama import Fore, Style
 import sys
 
 # URL to check certificate status
@@ -24,15 +25,16 @@ def check_keybox(file_path):
     # Extract EC and RSA cert serial numbers
     ec_cert_sn, rsa_cert_sn = parse_cert(certs[0]), parse_cert(certs[3])
 
-    print(f'\nProcessing {file_path}:')
-    print(f'  EC Cert SN: {ec_cert_sn}')
-    print(f'  RSA Cert SN: {rsa_cert_sn}')
+    print(f'{os.path.basename(file_path)}:')
+    print(f'EC Cert SN: {ec_cert_sn}')
 
     # Check if the certs are revoked
     if any(sn in crl["entries"].keys() for sn in (ec_cert_sn, rsa_cert_sn)):
-        print(f'  Keybox {file_path} is revoked!')
+        print(f'{Fore.RED}REVOKED')
+        print(Style.RESET_ALL)
     else:
-        print(f'  Keybox {file_path} is still valid!')
+        print(f'{Fore.GREEN}VALID')
+        print(Style.RESET_ALL)
 
 # Main function to check all XML files in a directory
 def check_directory(directory):
